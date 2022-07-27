@@ -21,11 +21,12 @@ const { articles } = defineProps<{
 
 <style lang="scss" scoped>
 .articleList {
+  flex: auto;
   max-width: 100%;
   margin: 100px;
   display: grid;
   justify-content: stretch;
-  grid-template-columns: repeat(5, minmax(160px, 324px));
+  grid-template-columns: repeat(auto-fit, minmax(324px, 1fr));
   grid-auto-rows: 224px;
   gap: 37px;
 }
