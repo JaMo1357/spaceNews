@@ -1,0 +1,7 @@
+<svg id="chevron_L" xmlns="http://www.w3.org/2000/svg" width="50" height="50" viewBox="0 0 50 50">
+  <g id="Ellipse_1" data-name="Ellipse 1" fill="none" stroke="#fff" stroke-width="3">
+    <circle cx="25" cy="25" r="25" stroke="none"/>
+    <circle cx="25" cy="25" r="23.5" fill="none"/>
+  </g>
+  <path id="Path_1" data-name="Path 1" d="M18.037,4.253a.862.862,0,0,1,0,1.219L10.311,13.2l7.725,7.725a.862.862,0,1,1-1.219,1.219L8.483,13.806a.862.862,0,0,1,0-1.219l8.335-8.335A.862.862,0,0,1,18.037,4.253Z" transform="translate(11.529 11.35)" fill="#fff"/>
+</svg>
