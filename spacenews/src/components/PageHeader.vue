@@ -11,21 +11,39 @@
 
     <div class="searchBar">
       <div class="magnification">O</div>
-      <input type="text" placeholder="Search...">
+      <input
+        type="text"
+        placeholder="Search..."
+        v-model="searchText"
+        @keyup="checkSearchInput"
+      >
     </div>
   </div>
 </template>
 
 <script lang="ts">
-import { defineComponent } from 'vue'
+import { defineComponent, ref } from 'vue'
 
 export default defineComponent({
-	props: {},
 	setup() {
     const menuArray = ['home', 'articles', 'blogs', 'reports'];
+    const searchText = ref('')
+
+    const checkSearchInput = (e: Event) => {
+      e.preventDefault
+      const value = (e.target as HTMLInputElement).value
+      const regex = /^[a-zA-Z-]+$/;
+
+      if (!regex.test(value)) {
+        console.log('BAD')
+        searchText.value = searchText.value.replace(/[^a-zA-Z-]/g, '')
+      }
+    }
 
     return {
-      menuArray
+      menuArray,
+      checkSearchInput,
+      searchText,
     }
   },
 })
@@ -78,7 +96,7 @@ export default defineComponent({
     
     .magnification {
       margin: 15px;
-      border: 2px solid white;
+      border: 2px solid #fff;
       height: 30px;
       width: 30px;
     }
@@ -90,6 +108,7 @@ export default defineComponent({
       border: none;
       outline: none;
       font-size: 24px;
+      color: #fff;
     }
   }
 }
