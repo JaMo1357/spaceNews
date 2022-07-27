@@ -21,7 +21,6 @@ const props = defineProps<{
 }>()
 
 const isHovered = ref(false)
-
 </script>
 
 <style lang="scss" scoped>
@@ -37,7 +36,7 @@ img {
   height: 100%;
   object-fit: cover;
   border-radius: 20px;
-  transition: height 0.3s, width 0.3s, margin 0.3s;
+  transition: transform 0.3s;
 
   &.hovered {
     transform: scale(1.1);

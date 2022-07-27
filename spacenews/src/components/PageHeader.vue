@@ -21,32 +21,21 @@
   </div>
 </template>
 
-<script lang="ts">
-import { defineComponent, ref } from 'vue'
+<script setup lang="ts">
+import { ref } from 'vue'
+  const menuArray = ['home', 'articles', 'blogs', 'reports']
+  const searchText = ref('')
 
-export default defineComponent({
-	setup() {
-    const menuArray = ['home', 'articles', 'blogs', 'reports'];
-    const searchText = ref('')
+  const checkSearchInput = (e: Event) => {
+    e.preventDefault
 
-    const checkSearchInput = (e: Event) => {
-      e.preventDefault
-      const value = (e.target as HTMLInputElement).value
-      const regex = /^[a-zA-Z-]+$/;
+    const value = (e.target as HTMLInputElement).value
+    const regex = /^[a-zA-Z-]+$/;
 
-      if (!regex.test(value)) {
-        console.log('BAD')
-        searchText.value = searchText.value.replace(/[^a-zA-Z-]/g, '')
-      }
+    if (!regex.test(value)) {
+      searchText.value = searchText.value.replace(/[^a-zA-Z-]/g, '')
     }
-
-    return {
-      menuArray,
-      checkSearchInput,
-      searchText,
-    }
-  },
-})
+  }
 </script>
 
 <style lang="scss">

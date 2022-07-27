@@ -8,7 +8,5 @@ export async function apiGet<T>(endpoint: string) {
   const response = await fetch(finalEndpoint)
   const data = await response.json() as Array<article>
 
-  console.log('data', data);
-
   return data;
 }

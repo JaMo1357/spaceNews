@@ -4,18 +4,9 @@
   <PageContent />
 </template>
 
-<script lang="ts">
-import { defineComponent } from 'vue'
+<script setup lang="ts">
 import PageHeader from './PageHeader.vue'
 import PageContent from './PageContent.vue'
-
-export default defineComponent({
-  name: 'App',
-  components: {
-    PageHeader,
-    PageContent,
-  }
-});
 </script>
 
 <style>
@@ -27,5 +18,4 @@ export default defineComponent({
   color: #fff;
   background: #262626;
 }
-
 </style>
