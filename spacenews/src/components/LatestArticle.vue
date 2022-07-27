@@ -1,7 +1,7 @@
 <template>
   <div
     class="latestArticleWrapper"
-    :style="{ background: imageGradient }"
+    :style="articleWrapperStyle"
   >
     <div class="latestArticle">
       <div class="pageSection">
@@ -34,7 +34,13 @@ const props = defineProps<{
 const publishedAt = new Date(props.latestArticle?.publishedAt).toISOString().split('T')[0]
 
 const gradient = 'linear-gradient(90deg, rgba(38,38,38,1) 30%, rgba(0,0,0,0.20211834733893552) 100%)'
-const imageGradient = `${gradient}, url(${props.latestArticle.imageUrl})`
+
+const articleWrapperStyle = {
+  background: `${gradient}, url(${props.latestArticle.imageUrl})`,
+  backgroundAttachment: 'fixed',
+  backgroundRepeat: 'no-repeat',
+  backgroundSize: 'cover',
+}
 </script>
 
 <style lang="scss" scoped>
@@ -42,10 +48,7 @@ const imageGradient = `${gradient}, url(${props.latestArticle.imageUrl})`
   display: flex;
   flex-direction: row;
   width: 100%;
-  background-attachment: fixed;
-  background-repeat: no-repeat;
-  background-size: cover;
-
+  
   .latestSection {
     text-transform: uppercase;
     color: grey;
