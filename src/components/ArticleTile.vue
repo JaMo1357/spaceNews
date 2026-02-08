@@ -5,8 +5,8 @@
     @mouseleave="isHovered = false"
   >
     <img
-      :src="props.article?.imageUrl"
-      :alt="props.article?.newsSite"
+      :src="props.article?.image_url"
+      :alt="props.article?.news_site"
       :class="[isHovered ? 'hovered' : '']"
     />
   </div>

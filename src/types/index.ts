@@ -1,13 +1,21 @@
 export interface article {
-  events?: Array<any>
-  featured?: boolean
-  id?: number
-  imageUrl?: string
-  launches?: []
-  newsSite?: string
-  publishedAt?: Date
-  summary?: string
-  title?: string
-  updatedAt?: Date
-  url?: string
+  authors: { name: string; socials: string | null }[]
+  events: any[]
+  featured: boolean
+  id: number
+  image_url: string
+  launches: any[]
+  news_site: string
+  published_at: string
+  summary: string
+  title: string
+  updated_at: string
+  url: string
+}
+
+export interface articlesResponse {
+  count: number
+  next: string
+  previous?: string
+  results: article[]
 }

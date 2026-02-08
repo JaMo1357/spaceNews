@@ -6,7 +6,7 @@
     <div class="latestArticle">
       <div class="pageSection">
         <span class="latestSection">ARTICLES</span>
-        <span class="latestSite">{{ latestArticle?.newsSite }}</span>
+        <span class="latestSite">{{ latestArticle?.news_site }}</span>
       </div>
       <h1 class="articleTitle">
         {{ latestArticle?.title }}
@@ -32,8 +32,8 @@ const props = defineProps<{
 }>()
 
 const publishedAt = computed(() => {
-  return props.latestArticle?.publishedAt
-    ? new Date(props.latestArticle.publishedAt).toISOString().split('T')[0]
+  return props.latestArticle?.published_at
+    ? new Date(props.latestArticle.published_at).toISOString().split('T')[0]
     : ''
 })
 
@@ -41,7 +41,7 @@ const gradient = 'linear-gradient(90deg, rgba(38,38,38,1) 30%, rgba(0,0,0,0.2021
 
 const articleWrapperStyle = computed(() => {
   return {
-    background: `${gradient}, url(${props.latestArticle?.imageUrl})`,
+    background: `${gradient}, url(${props.latestArticle?.image_url})`,
     backgroundAttachment: 'fixed',
     backgroundRepeat: 'no-repeat',
     backgroundSize: 'cover',
