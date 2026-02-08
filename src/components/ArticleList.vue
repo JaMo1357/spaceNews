@@ -11,7 +11,6 @@
 <script setup lang="ts">
 import ArticleTile from '@/components/ArticleTile.vue'
 import { article } from '@/types'
-import { defineProps } from 'vue';
 
 // eslint-disable-next-line vue/no-setup-props-destructure
 const { articles } = defineProps<{

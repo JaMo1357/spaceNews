@@ -6,7 +6,7 @@
   >
     <img
       :src="props.article?.imageUrl"
-      :alt="props.article.newsSite"
+      :alt="props.article?.newsSite"
       :class="[isHovered ? 'hovered' : '']"
     />
   </div>
@@ -14,7 +14,7 @@
 
 <script setup lang="ts">
 import { article } from '@/types'
-import { defineProps, ref } from 'vue';
+import { ref } from 'vue';
 
 const props = defineProps<{
   article?: article

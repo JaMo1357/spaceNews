@@ -18,7 +18,7 @@ const latestArticle: article = articles[0] || {}
 
 <style lang="scss">
 .pageContent {
-  display: flex; 
+  display: flex;
   flex-direction: column;
   height: 100%;
   width: 100%;

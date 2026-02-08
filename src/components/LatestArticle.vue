@@ -6,16 +6,16 @@
     <div class="latestArticle">
       <div class="pageSection">
         <span class="latestSection">ARTICLES</span>
-        <span class="latestSite">{{ latestArticle.newsSite }}</span>
+        <span class="latestSite">{{ latestArticle?.newsSite }}</span>
       </div>
       <h1 class="articleTitle">
-        {{ latestArticle.title }}
+        {{ latestArticle?.title }}
       </h1>
       <span class="publishedAt">
         {{ publishedAt }}
       </span>
       <p class="articleSummary">
-        {{ latestArticle.summary }}
+        {{ latestArticle?.summary }}
       </p>
 
       <span class="readMore">Read more</span>
@@ -25,22 +25,28 @@
 
 <script setup lang="ts">
 import { article } from '@/types'
-import { defineProps } from 'vue';
+import { computed } from 'vue'
 
 const props = defineProps<{
   latestArticle?: article
 }>()
 
-const publishedAt = new Date(props.latestArticle?.publishedAt).toISOString().split('T')[0]
+const publishedAt = computed(() => {
+  return props.latestArticle?.publishedAt
+    ? new Date(props.latestArticle.publishedAt).toISOString().split('T')[0]
+    : ''
+})
 
 const gradient = 'linear-gradient(90deg, rgba(38,38,38,1) 30%, rgba(0,0,0,0.20211834733893552) 100%)'
 
-const articleWrapperStyle = {
-  background: `${gradient}, url(${props.latestArticle.imageUrl})`,
-  backgroundAttachment: 'fixed',
-  backgroundRepeat: 'no-repeat',
-  backgroundSize: 'cover',
-}
+const articleWrapperStyle = computed(() => {
+  return {
+    background: `${gradient}, url(${props.latestArticle?.imageUrl})`,
+    backgroundAttachment: 'fixed',
+    backgroundRepeat: 'no-repeat',
+    backgroundSize: 'cover',
+  }
+})
 </script>
 
 <style lang="scss" scoped>
@@ -48,7 +54,7 @@ const articleWrapperStyle = {
   display: flex;
   flex-direction: row;
   width: 100%;
-  
+
   .latestSection {
     text-transform: uppercase;
     color: grey;
