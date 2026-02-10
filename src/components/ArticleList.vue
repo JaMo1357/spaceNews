@@ -1,5 +1,5 @@
 <template>
-  <div class="articleList">
+  <div class="article-list">
     <ArticleTile
       v-for="article in articles"
       :key="article.id"
@@ -19,7 +19,7 @@ const { articles } = defineProps<{
 </script>
 
 <style lang="scss" scoped>
-.articleList {
+.article-list {
   flex: auto;
   max-width: 100%;
   margin: 100px;

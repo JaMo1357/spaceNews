@@ -1,5 +1,5 @@
 <template>
-  <div class="pageHeader">
+  <div class="page-header">
     <img class="logo" src="../assets/images/logo.svg" />
     <ul class="menu">
       <li v-for="(listItem, i) in menuArray"
@@ -9,7 +9,7 @@
       </li>
     </ul>
 
-    <div class="searchBar">
+    <div class="search-bar">
       <div class="magnification">O</div>
       <input
         type="text"
@@ -39,15 +39,15 @@ import { ref } from 'vue'
 </script>
 
 <style lang="scss">
-.pageHeader {
+.page-header {
   width: 100%;
-  height: 100px;
   background: #262626 0% 0% no-repeat padding-box;
-  display: inline-flex;
-  align-items: center;
+  display: flex;
   flex-direction: row;
+  flex-wrap: wrap;
+  align-items: center;
   justify-content: space-between;
-  font-size: 24px;
+  font-size: 20px;
 
   .logo {
     height: 54px;
@@ -71,7 +71,7 @@ import { ref } from 'vue'
     }
   }
 
-  .searchBar {
+  .search-bar {
     display: inline-flex;
     align-items: center;
     flex-direction: row;
@@ -82,7 +82,7 @@ import { ref } from 'vue'
     border-width: 0;
     border-radius: 20px;
     cursor: pointer;
-    
+
     .magnification {
       margin: 15px;
       border: 2px solid #fff;

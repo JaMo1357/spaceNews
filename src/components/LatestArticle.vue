@@ -1,24 +1,24 @@
 <template>
   <div
-    class="latestArticleWrapper"
+    class="latest-article"
     :style="articleWrapperStyle"
   >
-    <div class="latestArticle">
-      <div class="pageSection">
-        <span class="latestSection">ARTICLES</span>
-        <span class="latestSite">{{ latestArticle?.news_site }}</span>
+    <div class="latest-article-content">
+      <div class="page-section">
+        <span class="latest-section">ARTICLES</span>
+        <span class="latest-site">{{ latestArticle?.news_site }}</span>
       </div>
-      <h1 class="articleTitle">
+      <h1 class="article-title">
         {{ latestArticle?.title }}
       </h1>
-      <span class="publishedAt">
+      <span class="published-at">
         {{ publishedAt }}
       </span>
-      <p class="articleSummary">
+      <p class="article-summary">
         {{ latestArticle?.summary }}
       </p>
 
-      <span class="readMore">Read more</span>
+      <span class="read-more">Read more</span>
     </div>
   </div>
 </template>
@@ -50,44 +50,39 @@ const articleWrapperStyle = computed(() => {
 </script>
 
 <style lang="scss" scoped>
-.latestArticleWrapper {
+.latest-article {
   display: flex;
   flex-direction: row;
   width: 100%;
 
-  .latestSection {
+  .latest-section {
     text-transform: uppercase;
     color: grey;
     font-weight: bold;
   }
 
-  .latestSite {
+  .latest-site {
     color: #508AD5;
     margin-left: 20px;
     font-weight: bold;
   }
 
-  .articleWrapperImage {
-    position: absolute;
-    width: 100%;
-    height: 100%;
-  }
-
-  .latestArticle {
-    padding: 100px;
+  .latest-article-content {
+    padding: 15px;
+    margin: 25px;
     flex-direction: column;
     display: flex;
     width: 600px;
 
-    .publishedAt {
+    .published-at {
       color: grey;
     }
-    .articleSummary {
+    .article-summary {
       color: grey;
       text-align: left;
     }
 
-    .readMore {
+    .read-more {
       color: #508AD5;
       text-align: right;
       cursor: pointer;

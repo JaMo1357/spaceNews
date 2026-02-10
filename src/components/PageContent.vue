@@ -1,6 +1,6 @@
 
 <template>
-  <div class="pageContent" >
+  <div class="page-content">
     <LatestArticle :latestArticle="latestArticle" />
     <ArticleList :articles="articles" />
   </div>
@@ -26,7 +26,7 @@ try {
 </script>
 
 <style lang="scss">
-.pageContent {
+.page-content {
   display: flex;
   flex-direction: column;
   height: 100%;
