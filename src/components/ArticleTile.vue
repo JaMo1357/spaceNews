@@ -1,13 +1,8 @@
 <template>
-  <div
-    class="articleTile"
-    @mouseenter="isHovered = true"
-    @mouseleave="isHovered = false"
-  >
+  <div class="article-tile">
     <img
       :src="props.article?.image_url"
       :alt="props.article?.news_site"
-      :class="[isHovered ? 'hovered' : '']"
     />
   </div>
 </template>
@@ -19,28 +14,26 @@ import { ref } from 'vue';
 const props = defineProps<{
   article?: article
 }>()
-
-const isHovered = ref(false)
 </script>
 
 <style lang="scss" scoped>
-.articleTile {
+.article-tile {
   display: block;
   object-fit: cover;
   cursor: pointer;
-}
 
-img {
-  display: block;
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  border-radius: 20px;
-  transition: transform 0.3s;
+  img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 20px;
+    transition: transform 0.3s;
 
-  &.hovered {
-    transform: scale(1.1);
-    border: 3px solid white;
+    &:hover {
+      transform: scale(1.01);
+      box-shadow: 0 0 3px 0 white;
+    }
   }
 }
 </style>

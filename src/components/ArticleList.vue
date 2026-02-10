@@ -10,7 +10,7 @@
 
 <script setup lang="ts">
 import ArticleTile from '@/components/ArticleTile.vue'
-import { article } from '@/types'
+import type { article } from '@/types'
 
 // eslint-disable-next-line vue/no-setup-props-destructure
 const { articles } = defineProps<{
