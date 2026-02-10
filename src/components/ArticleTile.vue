@@ -90,6 +90,7 @@ const formattedDate = computed(() => {
    TILE / GRID VIEW
    ═══════════════════════════════════════════════════ */
 .article-tile--tile {
+  aspect-ratio: 3 / 2;
   .article-tile__image {
     position: absolute;
     inset: 0;

@@ -3,35 +3,64 @@
     <div class="header-inner">
       <img class="logo" src="../assets/images/logo.svg" alt="SpaceNews logo" />
 
-      <nav class="nav">
-        <ul class="menu">
-          <li v-for="(item, i) in menuArray" :key="i">
-            <a href="#" :class="{ active: i === 0 }">{{ item }}</a>
-          </li>
-        </ul>
-      </nav>
+      <!-- Burger button (mobile only) -->
+      <button
+        class="burger"
+        :class="{ open: menuOpen }"
+        @click="menuOpen = !menuOpen"
+        aria-label="Toggle menu"
+      >
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
 
-      <div class="search-bar" :class="{ focused: isSearchFocused }">
-        <img class="search-icon" src="../assets/images/search.svg" alt="Search" />
-        <input
-          type="text"
-          placeholder="Search articles…"
-          v-model="searchText"
-          @keyup="checkSearchInput"
-          @focus="isSearchFocused = true"
-          @blur="isSearchFocused = false"
-        >
+      <!-- Nav + search: slide-in on mobile -->
+      <div class="header-right" :class="{ visible: menuOpen }">
+        <nav class="nav">
+          <ul class="menu">
+            <li v-for="(item, i) in menuArray" :key="i">
+              <a href="#" :class="{ active: i === 0 }" @click="menuOpen = false">{{ item }}</a>
+            </li>
+          </ul>
+        </nav>
+
+        <div class="search-bar" :class="{ focused: isSearchFocused }">
+          <img class="search-icon" src="../assets/images/search.svg" alt="Search" />
+          <input
+            type="text"
+            placeholder="Search articles…"
+            v-model="searchText"
+            @keyup="checkSearchInput"
+            @focus="isSearchFocused = true"
+            @blur="isSearchFocused = false"
+          >
+        </div>
       </div>
     </div>
   </header>
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue'
+import { ref, watch } from 'vue'
 
 const menuArray = ['Home', 'Articles', 'Blogs', 'Reports']
 const searchText = ref('')
 const isSearchFocused = ref(false)
+const menuOpen = ref(false)
+
+// Close menu on resize to desktop
+const onResize = () => {
+  if (window.innerWidth > 768) menuOpen.value = false
+}
+if (typeof window !== 'undefined') {
+  window.addEventListener('resize', onResize)
+}
+
+// Prevent body scroll when mobile menu is open
+watch(menuOpen, (open) => {
+  document.body.style.overflow = open ? 'hidden' : ''
+})
 
 const checkSearchInput = (e: Event) => {
   e.preventDefault
@@ -52,7 +81,6 @@ const checkSearchInput = (e: Event) => {
   backdrop-filter: blur(20px);
   -webkit-backdrop-filter: blur(20px);
   border-bottom: 1px solid var(--border-subtle);
-  transition: background var(--transition);
 }
 
 .header-inner {
@@ -69,10 +97,59 @@ const checkSearchInput = (e: Event) => {
   height: 40px;
   flex-shrink: 0;
   transition: opacity var(--transition);
+  position: relative;
+  z-index: 110;
 
   &:hover {
     opacity: 0.8;
   }
+}
+
+/* ── Burger Button ─────────────────────────────── */
+.burger {
+  display: none;
+  flex-direction: column;
+  justify-content: center;
+  gap: 5px;
+  width: 36px;
+  height: 36px;
+  padding: 6px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  position: relative;
+  z-index: 110;
+
+  span {
+    display: block;
+    width: 100%;
+    height: 2px;
+    background: var(--text-primary);
+    border-radius: 2px;
+    transition: all 0.3s ease;
+    transform-origin: center;
+  }
+
+  &.open {
+    span:nth-child(1) {
+      transform: translateY(7px) rotate(45deg);
+    }
+    span:nth-child(2) {
+      opacity: 0;
+    }
+    span:nth-child(3) {
+      transform: translateY(-7px) rotate(-45deg);
+    }
+  }
+}
+
+/* ── Desktop: nav + search inline ────────────────── */
+.header-right {
+  display: flex;
+  align-items: center;
+  gap: 24px;
+  flex: 1;
+  justify-content: flex-end;
 }
 
 .nav {
@@ -117,7 +194,6 @@ const checkSearchInput = (e: Event) => {
     &:hover,
     &.active {
       color: var(--text-primary);
-
       &::after {
         transform: scaleX(1);
       }
@@ -140,6 +216,7 @@ const checkSearchInput = (e: Event) => {
   border: 1px solid var(--border-subtle);
   border-radius: 100px;
   transition: all var(--transition);
+  flex-shrink: 0;
 
   &.focused,
   &:hover {
@@ -168,6 +245,59 @@ const checkSearchInput = (e: Event) => {
     &::placeholder {
       color: var(--text-muted);
     }
+  }
+}
+
+/* ═══════════════════════════════════════════════════
+   MOBILE — ≤ 768px
+   ═══════════════════════════════════════════════════ */
+@media (max-width: 768px) {
+  .header-inner {
+    padding: 0 20px;
+  }
+
+  .burger {
+    display: flex;
+  }
+
+  .header-right {
+    /* Full-screen overlay */
+    position: fixed;
+    inset: 0;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 40px;
+    background: var(--bg-primary);
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.35s ease, visibility 0.35s ease;
+    z-index: 105;
+
+    &.visible {
+      opacity: 1;
+      visibility: visible;
+    }
+  }
+
+  .nav {
+    flex: none;
+  }
+
+  .menu {
+    flex-direction: column;
+    align-items: center;
+    gap: 12px;
+
+    li a {
+      font-size: 20px;
+      padding: 12px 24px;
+    }
+  }
+
+  .search-bar {
+    width: min(280px, 80vw);
+    height: 48px;
   }
 }
 </style>

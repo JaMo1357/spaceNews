@@ -61,7 +61,6 @@ const viewMode = ref<'tile' | 'row'>('tile')
 <style lang="scss" scoped>
 .articles-section {
   max-width: 1400px;
-  margin: 0 auto;
   padding: 60px 40px 80px;
 }
 
@@ -132,9 +131,8 @@ const viewMode = ref<'tile' | 'row'>('tile')
 
   &--tile {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
-    grid-auto-rows: 240px;
-    gap: 24px;
+    grid-template-columns: 1fr;
+    gap: 20px;
   }
 
   &--row {
@@ -144,15 +142,24 @@ const viewMode = ref<'tile' | 'row'>('tile')
   }
 }
 
-/* ── Responsive: force tile on small screens ─────── */
+/* ── Responsive grid breakpoints ─────────────────── */
+@media (min-width: 640px) {
+  .article-list--tile {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 24px;
+  }
+}
+
+@media (min-width: 1024px) {
+  .article-list--tile {
+    grid-template-columns: repeat(3, 1fr);
+    gap: 28px;
+  }
+}
+
 @media (max-width: 600px) {
   .articles-section {
     padding: 32px 16px 60px;
-  }
-
-  .article-list--tile {
-    grid-template-columns: 1fr;
-    grid-auto-rows: 200px;
   }
 
   .article-list--row {
