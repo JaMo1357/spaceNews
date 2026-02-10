@@ -68,6 +68,7 @@ const articleWrapperStyle = computed(() => {
   }
 
   .latest-article-content {
+    background: #ffffff14;
     padding: 15px;
     margin: 25px;
     flex-direction: column;
@@ -78,7 +79,7 @@ const articleWrapperStyle = computed(() => {
       color: grey;
     }
     .article-summary {
-      color: grey;
+      color: #e1e1e1;
       text-align: left;
     }
 
