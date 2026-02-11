@@ -39,5 +39,6 @@
       "parser": "@typescript-eslint/parser"
     },
     "rules": {}
-  }
+  },
+  "packageManager": "pnpm@9.15.4"
 }
