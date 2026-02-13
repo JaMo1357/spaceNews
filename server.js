@@ -16,7 +16,7 @@ app.use(express.json());
   try {
     await sql`
       CREATE TABLE IF NOT EXISTS users (
-        id SERIAL PRIMARY KEY,
+        user_id SERIAL PRIMARY KEY,
         email TEXT UNIQUE NOT NULL,
         password_hash TEXT NOT NULL,
         full_name TEXT,
@@ -40,7 +40,7 @@ app.post('/api/register', async (req, res) => {
     const result = await sql`
       INSERT INTO users (email, password_hash, full_name)
       VALUES (${email}, ${password}, ${name})
-      RETURNING id, email, full_name, created_at
+      RETURNING user_id, email, full_name, created_at
     `;
     res.json(result[0]);
   } catch (err) {
