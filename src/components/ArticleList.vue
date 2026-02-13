@@ -1,5 +1,8 @@
 <template>
-  <section class="articles-section">
+  <section
+    id="articlesSection"
+    class="articles-section"
+  >
     <div class="section-header">
       <h2 class="section-title">Latest News</h2>
       <div class="section-line"></div>

@@ -22,7 +22,7 @@
           <nav class="nav">
             <ul class="menu">
               <li v-for="(item, i) in menuArray" :key="i">
-                <a href="#" :class="{ active: i === 0 }" @click="menuOpen = false">{{ item }}</a>
+                <a :href="item.url" :class="{ active: i === 0 }" @click="menuOpen = false">{{ item.name }}</a>
               </li>
             </ul>
           </nav>
@@ -67,11 +67,15 @@
 import { ref, watch, onMounted } from 'vue'
 import LoginPopup from './LoginPopup.vue';
 
-const menuArray = ['Home', 'Articles', 'Blogs', 'Reports']
+const menuArray = [
+  { name: 'Home', url: '/' },
+  { name: 'Articles', url: '#articlesSection' },
+  { name: 'Blogs', url: '/blogs' },
+  { name: 'About', url: '/about' },
+]
 const searchText = ref('')
 const isSearchFocused = ref(false)
 const menuOpen = ref(false)
-const users = ref([]);
 const showLogin = ref(false);
 const currentUser = ref<any>(null);
 const isMobile = ref(false);
@@ -111,8 +115,6 @@ const checkSearchInput = (e: Event) => {
 
 onMounted(async () => {
   onResize();
-  // const response = await fetch('http://localhost:3000/api/users');
-  // users.value = await response.json();
 });
 </script>
 
