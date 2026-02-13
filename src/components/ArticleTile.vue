@@ -17,8 +17,24 @@
     <!-- Tile mode: overlay gradient + title at bottom -->
     <template v-if="viewMode === 'tile'">
       <div class="article-tile__overlay"></div>
-      <div class="article-tile__title">
-        <span>{{ props.article?.title }}</span>
+      <div class="article-tile__content">
+        <div class="article-tile__title">
+          <span>{{ props.article?.title }}</span>
+        </div>
+        <div class="article-tile__meta-info">
+          <div class="meta-row">
+            <span class="meta-label">By</span>
+            <span class="meta-value">{{ authorsText }}</span>
+          </div>
+          <div class="meta-row">
+            <span class="meta-label">On</span>
+            <span class="meta-value">{{ formattedDate }}</span>
+          </div>
+          <div class="meta-row">
+            <span class="meta-label">Source</span>
+            <span class="meta-value">{{ props.article?.news_site }}</span>
+          </div>
+        </div>
       </div>
     </template>
 
@@ -63,6 +79,11 @@ const formattedDate = computed(() => {
     month: 'short',
     day: 'numeric',
   })
+})
+
+const authorsText = computed(() => {
+  if (!props.article?.authors || props.article.authors.length === 0) return 'Unknown Author'
+  return props.article.authors.map(a => a.name).join(', ')
 })
 </script>
 
@@ -123,30 +144,89 @@ const formattedDate = computed(() => {
   &.article-tile--hovered .article-tile__overlay {
     background: linear-gradient(
       180deg,
-      rgba(13, 13, 18, 0) 20%,
-      rgba(13, 13, 18, 0.6) 50%,
-      rgba(13, 13, 18, 0.95) 100%
+      rgba(13, 13, 18, 0) 10%,
+      rgba(13, 13, 18, 0.7) 40%,
+      rgba(13, 13, 18, 0.98) 100%
     );
   }
 
-  .article-tile__title {
+  .article-tile__content {
     position: absolute;
     bottom: 0;
     left: 0;
     right: 0;
     z-index: 2;
     padding: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    transform: translateY(calc(100% - 80px)); /* Show only title by default */
+    transition: transform 0.4s cubic-bezier(0.2, 0.8, 0.2, 1);
+  }
 
-    span {
-      display: -webkit-box;
-      -webkit-line-clamp: 3;
-      -webkit-box-orient: vertical;
+  &.article-tile--hovered .article-tile__content {
+    transform: translateY(0);
+  }
+
+  .article-tile__title span {
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    color: var(--text-primary);
+    font-size: 16px;
+    font-weight: 700;
+    line-height: 1.4;
+    text-shadow: 0 2px 4px rgba(0,0,0,0.5);
+    transition: all 0.3s ease;
+  }
+
+  &.article-tile--hovered .article-tile__title span {
+    -webkit-line-clamp: unset; /* Expand to show full title */
+    line-clamp: unset;
+  }
+
+  .article-tile__meta-info {
+    opacity: 0;
+    transition: opacity 0.3s ease 0.1s;
+
+    > * {
       overflow: hidden;
-      color: var(--text-primary);
-      font-size: 15px;
-      font-weight: 600;
-      line-height: 1.45;
     }
+  }
+
+  &.article-tile--hovered .article-tile__meta-info {
+    opacity: 1;
+  }
+
+  .meta-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center; /* Vertically center items */
+    font-size: 13px;
+    color: var(--text-secondary);
+    padding: 2px 0;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+
+    &:last-child {
+      border-bottom: none;
+    }
+  }
+
+  .meta-label {
+    font-weight: 600;
+    color: var(--text-muted);
+    margin-right: 8px;
+  }
+
+  .meta-value {
+    color: var(--text-primary);
+    text-align: right;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 150px;
   }
 }
 
@@ -211,6 +291,7 @@ const formattedDate = computed(() => {
     color: var(--text-primary);
     display: -webkit-box;
     -webkit-line-clamp: 2;
+    line-clamp: 2;
     -webkit-box-orient: vertical;
     overflow: hidden;
   }
@@ -222,6 +303,7 @@ const formattedDate = computed(() => {
     color: var(--text-secondary);
     display: -webkit-box;
     -webkit-line-clamp: 2;
+    line-clamp: 2;
     -webkit-box-orient: vertical;
     overflow: hidden;
   }

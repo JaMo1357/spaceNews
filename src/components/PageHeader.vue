@@ -16,42 +16,80 @@
       </button>
 
       <!-- Nav + search: slide-in on mobile -->
-      <div class="header-right" :class="{ visible: menuOpen }">
-        <nav class="nav">
-          <ul class="menu">
-            <li v-for="(item, i) in menuArray" :key="i">
-              <a href="#" :class="{ active: i === 0 }" @click="menuOpen = false">{{ item }}</a>
-            </li>
-          </ul>
-        </nav>
+      <Teleport to="body" :disabled="!isMobile">
+        <div class="header-right" :class="{ visible: menuOpen }">
+          <button class="close-menu-btn" v-if="isMobile && menuOpen" @click="menuOpen = false">&times;</button>
+          <nav class="nav">
+            <ul class="menu">
+              <li v-for="(item, i) in menuArray" :key="i">
+                <a href="#" :class="{ active: i === 0 }" @click="menuOpen = false">{{ item }}</a>
+              </li>
+            </ul>
+          </nav>
 
-        <div class="search-bar" :class="{ focused: isSearchFocused }">
-          <img class="search-icon" src="../assets/images/search.svg" alt="Search" />
-          <input
-            type="text"
-            placeholder="Search articles…"
-            v-model="searchText"
-            @keyup="checkSearchInput"
-            @focus="isSearchFocused = true"
-            @blur="isSearchFocused = false"
-          >
+          <div class="search-bar" :class="{ focused: isSearchFocused }">
+            <img class="search-icon" src="../assets/images/search.svg" alt="Search" />
+            <input
+              type="text"
+              placeholder="Search articles…"
+              v-model="searchText"
+              @keyup="checkSearchInput"
+              @focus="isSearchFocused = true"
+              @blur="isSearchFocused = false"
+            >
+          </div>
+
+          <div class="user-actions">
+            <button v-if="!currentUser" class="login-btn" @click="showLogin = true">Login</button>
+            <div v-else class="user-profile">
+              <div class="user-avatar">
+                <span>{{ (currentUser.full_name || currentUser.name || 'U').charAt(0).toUpperCase() }}</span>
+              </div>
+              <span class="user-name">{{ currentUser.full_name || currentUser.name }}</span>
+              <button class="logout-btn" @click="logout" title="Logout">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path><polyline points="16 17 21 12 16 7"></polyline><line x1="21" y1="12" x2="9" y2="12"></line></svg>
+              </button>
+            </div>
+          </div>
         </div>
-      </div>
+      </Teleport>
     </div>
+
+    <LoginPopup
+      v-if="showLogin"
+      @close="showLogin = false"
+      @login-success="handleLogin"
+    />
   </header>
 </template>
 
 <script setup lang="ts">
-import { ref, watch } from 'vue'
+import { ref, watch, onMounted } from 'vue'
+import LoginPopup from './LoginPopup.vue';
 
 const menuArray = ['Home', 'Articles', 'Blogs', 'Reports']
 const searchText = ref('')
 const isSearchFocused = ref(false)
 const menuOpen = ref(false)
+const users = ref([]);
+const showLogin = ref(false);
+const currentUser = ref<any>(null);
+const isMobile = ref(false);
+
+const handleLogin = (user: any) => {
+  currentUser.value = user;
+  showLogin.value = false;
+  menuOpen.value = false;
+};
+
+const logout = () => {
+  currentUser.value = null;
+};
 
 // Close menu on resize to desktop
 const onResize = () => {
-  if (window.innerWidth > 768) menuOpen.value = false
+  isMobile.value = window.innerWidth <= 1024;
+  if (!isMobile.value) menuOpen.value = false
 }
 if (typeof window !== 'undefined') {
   window.addEventListener('resize', onResize)
@@ -70,6 +108,12 @@ const checkSearchInput = (e: Event) => {
     searchText.value = searchText.value.replace(/[^a-zA-Z-]/g, '')
   }
 }
+
+onMounted(async () => {
+  onResize();
+  // const response = await fetch('http://localhost:3000/api/users');
+  // users.value = await response.json();
+});
 </script>
 
 <style lang="scss" scoped>
@@ -205,6 +249,103 @@ const checkSearchInput = (e: Event) => {
   }
 }
 
+.user-actions {
+  display: flex;
+  align-items: center;
+  margin-left: 12px;
+  height: 42px; /* Match search bar height */
+}
+
+.login-btn {
+  background: transparent;
+  border: 1px solid var(--accent);
+  color: var(--accent);
+  padding: 0 20px;
+  height: 100%;
+  border-radius: 100px; /* Match pill shape */
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+  white-space: nowrap;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  &:hover {
+    background: var(--accent);
+    color: white;
+  }
+}
+
+.user-profile {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  height: 100%;
+  background: rgba(255, 255, 255, 0.03);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  padding: 4px 6px 4px 12px; /* Less padding right for the button */
+  border-radius: 100px;
+  border: 1px solid rgba(255, 255, 255, 0.08); /* More subtle border */
+  transition: all 0.3s cubic-bezier(0.2, 0.8, 0.2, 1);
+  cursor: default;
+
+  &:hover {
+    background: rgba(255, 255, 255, 0.06);
+    border-color: rgba(255, 255, 255, 0.15);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+  }
+}
+
+.user-avatar {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, var(--accent), #a3b8ff);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 14px;
+  font-weight: 700;
+  color: white;
+  text-shadow: 0 1px 2px rgba(0,0,0,0.2);
+}
+
+.user-name {
+  color: var(--text-primary);
+  font-weight: 500;
+  font-size: 14px;
+  white-space: nowrap;
+}
+
+.logout-btn {
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  padding: 6px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--text-secondary);
+  border-radius: 50%;
+  transition: all 0.2s;
+  margin-left: 4px;
+
+  svg {
+    transition: transform 0.2s;
+  }
+
+  &:hover {
+    background: rgba(255, 107, 107, 0.1);
+    color: #ff6b6b;
+
+    svg {
+      transform: translateX(2px);
+    }
+  }
+}
+
 .search-bar {
   display: flex;
   align-items: center;
@@ -249,9 +390,9 @@ const checkSearchInput = (e: Event) => {
 }
 
 /* ═══════════════════════════════════════════════════
-   MOBILE — ≤ 768px
+   MOBILE — ≤ 1024px
    ═══════════════════════════════════════════════════ */
-@media (max-width: 768px) {
+@media (max-width: 1024px) {
   .header-inner {
     padding: 0 20px;
   }
@@ -298,6 +439,19 @@ const checkSearchInput = (e: Event) => {
   .search-bar {
     width: min(280px, 80vw);
     height: 48px;
+    order: -1;
+  }
+
+  .close-menu-btn {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    background: none;
+    border: none;
+    font-size: 32px;
+    color: var(--text-primary);
+    cursor: pointer;
+    z-index: 106;
   }
 }
 </style>

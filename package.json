@@ -8,11 +8,17 @@
     "build": "vue-tsc --noEmit && vite build",
     "preview": "vite preview",
     "start": "serve dist -s -l tcp://0.0.0.0:${PORT:-8000}",
-    "preinstall": "npx only-allow pnpm"
+    "preinstall": "npx only-allow pnpm",
+    "serve": "node server.js"
   },
   "dependencies": {
+    "@creatorsn/vfluent3": "^0.3.37",
+    "@neondatabase/auth": "0.2.0-beta.1",
+    "@neondatabase/serverless": "^1.0.2",
+    "cors": "^2.8.6",
+    "dotenv": "^17.3.1",
+    "express": "^5.2.1",
     "serve": "^14.2.4",
-    "vfluentdesign": "^0.3.0",
     "vue": "^3.2.37"
   },
   "devDependencies": {
