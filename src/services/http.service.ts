@@ -1,4 +1,4 @@
-import { article, articlesResponse } from '@/types'
+import { NewsArticle, articlesResponse } from '@/types'
 
 export const ARTICLES_ENDPOINT = '/articles'
 
@@ -12,4 +12,8 @@ export async function apiGet<T>(endpoint: string): Promise<T> {
   const data = await response.json()
 
   return data as T
+}
+
+export async function getArticle(id: number): Promise<NewsArticle> {
+  return apiGet<NewsArticle>(`${ARTICLES_ENDPOINT}/${id}`)
 }

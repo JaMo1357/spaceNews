@@ -11,10 +11,11 @@ import { ref } from 'vue'
 import LatestArticle from '@/components/LatestArticle.vue'
 import ArticleList from '@/components/ArticleList.vue'
 import { apiGet, ARTICLES_ENDPOINT } from '@/services/http.service'
-import { article, articlesResponse } from './../types'
+import { NewsArticle, articlesResponse } from '@/types'
 
-const articles = ref<article[]>([])
-const latestArticle = ref<article>({} as article)
+const articles = ref<NewsArticle[]>([])
+
+const latestArticle = ref<NewsArticle>({} as NewsArticle)
 
 try {
   const response = await apiGet<articlesResponse>(ARTICLES_ENDPOINT)

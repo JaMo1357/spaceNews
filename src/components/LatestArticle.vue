@@ -27,11 +27,11 @@
 </template>
 
 <script setup lang="ts">
-import { article } from '@/types'
+import { NewsArticle } from '@/types'
 import { computed } from 'vue'
 
 const props = defineProps<{
-  latestArticle?: article
+  latestArticle?: NewsArticle
 }>()
 
 const publishedAt = computed(() => {

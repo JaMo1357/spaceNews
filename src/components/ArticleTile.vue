@@ -7,6 +7,7 @@
     ]"
     @mouseenter="isHovered = true"
     @mouseleave="isHovered = false"
+    @click="goToArticle"
   >
     <!-- Shared: background image -->
     <div
@@ -47,30 +48,33 @@
         </div>
         <h3 class="article-tile__heading">{{ props.article?.title }}</h3>
         <p class="article-tile__summary">{{ props.article?.summary }}</p>
-        <a
-          :href="props.article?.url"
-          target="_blank"
-          rel="noopener"
-          class="article-tile__link"
-          @click.stop
-        >
+        <span
+          class="article-tile__link" >
           Read article →
-        </a>
+        </span>
       </div>
     </template>
   </div>
 </template>
 
 <script setup lang="ts">
-import { article } from '@/types'
+import { NewsArticle } from '@/types'
 import { ref, computed } from 'vue'
+import { useRouter } from 'vue-router'
 
 const props = defineProps<{
-  article?: article
+  article?: NewsArticle
   viewMode?: 'tile' | 'row'
 }>()
 
+const router = useRouter()
 const isHovered = ref(false)
+
+const goToArticle = () => {
+  if (props.article?.id) {
+    router.push({ name: 'Article', params: { id: props.article.id } })
+  }
+}
 
 const formattedDate = computed(() => {
   if (!props.article?.published_at) return ''

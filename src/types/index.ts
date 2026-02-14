@@ -1,10 +1,26 @@
-export interface article {
-  authors: { name: string; socials: string | null }[]
-  events: any[]
+export interface NewsArticle {
+  authors: {
+    name: string
+    socials: {
+      x: string
+      youtube: string
+      instagram: string
+      linkedin: string
+      mastodon: string
+      bluesky: string
+    } | null
+  }[]
+  events: {
+    event_id: number
+    provider: string
+  }[]
   featured: boolean
   id: number
   image_url: string
-  launches: any[]
+  launches: {
+    launch_id: string
+    provider: string
+  }[]
   news_site: string
   published_at: string
   summary: string
@@ -17,5 +33,5 @@ export interface articlesResponse {
   count: number
   next: string
   previous?: string
-  results: article[]
+  results: NewsArticle[]
 }

@@ -10,7 +10,7 @@
         <button
           class="toggle-btn"
           :class="{ active: viewMode === 'tile' }"
-          @click="viewMode = 'tile'"
+          @click="handleViewToggle('tile')"
           aria-label="Grid view"
         >
           <svg width="18" height="18" viewBox="0 0 18 18" fill="none">
@@ -23,7 +23,7 @@
         <button
           class="toggle-btn"
           :class="{ active: viewMode === 'row' }"
-          @click="viewMode = 'row'"
+          @click="handleViewToggle('row')"
           aria-label="List view"
         >
           <svg width="18" height="18" viewBox="0 0 18 18" fill="none">
@@ -49,16 +49,41 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue'
+import { ref, onMounted } from 'vue'
 import ArticleTile from '@/components/ArticleTile.vue'
-import type { article } from '@/types'
+import type { NewsArticle } from '@/types'
+import { useRoute } from 'vue-router'
 
 // eslint-disable-next-line vue/no-setup-props-destructure
 const { articles } = defineProps<{
-  articles?: Array<article>
+  articles?: Array<NewsArticle>
 }>()
 
+const route = useRoute()
 const viewMode = ref<'tile' | 'row'>('tile')
+const hasScrolled = ref(false)
+
+const handleViewToggle = (mode: 'tile' | 'row') => {
+  viewMode.value = mode
+  if (!hasScrolled.value) {
+    const section = document.getElementById('articlesSection')
+    if (section) {
+      section.scrollIntoView({ behavior: 'smooth' })
+      hasScrolled.value = true
+    }
+  }
+}
+
+onMounted(() => {
+  if (route.hash === '#articlesSection') {
+    setTimeout(() => {
+      const section = document.getElementById('articlesSection')
+      if (section) {
+        section.scrollIntoView({ behavior: 'smooth' })
+      }
+    }, 100)
+  }
+})
 </script>
 
 <style lang="scss" scoped>

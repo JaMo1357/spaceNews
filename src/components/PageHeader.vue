@@ -1,7 +1,9 @@
 <template>
   <header class="page-header">
     <div class="header-inner">
-      <img class="logo" src="../assets/images/logo.svg" alt="SpaceNews logo" />
+      <router-link to="/" class="logo-link">
+        <img class="logo" src="../assets/images/logo.svg" alt="SpaceNews logo" />
+      </router-link>
 
       <!-- Burger button (mobile only) -->
       <button
@@ -45,9 +47,8 @@
             <button v-if="!currentUser" class="login-btn" @click="showLogin = true">Login</button>
             <div v-else class="user-profile">
               <div class="user-avatar">
-                <span>{{ (currentUser.full_name || currentUser.name || 'U').charAt(0).toUpperCase() }}</span>
+                <span>{{ currentUser.full_name.charAt(0).toUpperCase() }}</span>
               </div>
-              <span class="user-name">{{ currentUser.full_name || currentUser.name }}</span>
               <button class="logout-btn" @click="logout" title="Logout">
                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path><polyline points="16 17 21 12 16 7"></polyline><line x1="21" y1="12" x2="9" y2="12"></line></svg>
               </button>
@@ -70,8 +71,7 @@ import { ref, watch, onMounted } from 'vue'
 import LoginPopup from './LoginPopup.vue';
 
 const menuArray = [
-  { name: 'Home', url: '/' },
-  { name: 'Articles', url: '/#articlesSection' }, // Hash linking might need special handling or removal if not needed
+  { name: 'Articles', url: '/#articlesSection' },
   { name: 'Blogs', url: '/blogs' },
   { name: 'About', url: '/about' },
 ]
@@ -257,7 +257,7 @@ onMounted(async () => {
   display: flex;
   align-items: center;
   margin-left: 12px;
-  height: 42px; /* Match search bar height */
+  height: 42px;
 }
 
 .login-btn {
@@ -266,7 +266,7 @@ onMounted(async () => {
   color: var(--accent);
   padding: 0 20px;
   height: 100%;
-  border-radius: 100px; /* Match pill shape */
+  border-radius: 100px;
   font-weight: 600;
   cursor: pointer;
   transition: all 0.2s;
@@ -284,14 +284,13 @@ onMounted(async () => {
 .user-profile {
   display: flex;
   align-items: center;
-  gap: 12px;
   height: 100%;
   background: rgba(255, 255, 255, 0.03);
   backdrop-filter: blur(10px);
   -webkit-backdrop-filter: blur(10px);
-  padding: 4px 6px 4px 12px; /* Less padding right for the button */
+  padding: 4px 6px 4px 12px;
   border-radius: 100px;
-  border: 1px solid rgba(255, 255, 255, 0.08); /* More subtle border */
+  border: 1px solid rgba(255, 255, 255, 0.08);
   transition: all 0.3s cubic-bezier(0.2, 0.8, 0.2, 1);
   cursor: default;
 
