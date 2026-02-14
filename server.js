@@ -2,9 +2,17 @@ import 'dotenv/config';
 import express from 'express';
 import { neon } from '@neondatabase/serverless';
 import cors from 'cors';
+import path from 'path';
+import { fileURLToPath } from 'url';
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
 const app = express();
 app.use(cors()); // Allow your Vue app to talk to this server
+
+// Serve static files from the dist directory
+app.use(express.static(path.join(__dirname, 'dist')));
 
 const sql = neon(process.env.DATABASE_URL);
 
@@ -83,4 +91,10 @@ app.get('/api/users', async (req, res) => {
   }
 });
 
-app.listen(3000, () => console.log('Server running on port 3000'));
+// Handle all other routes by serving index.html (SPA support)
+app.get(/(.*)/, (req, res) => {
+  res.sendFile(path.join(__dirname, 'dist', 'index.html'));
+});
+
+const PORT = process.env.PORT || 3000;
+app.listen(PORT, () => console.log(`Server running on port ${PORT}`));

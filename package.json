@@ -7,7 +7,7 @@
     "dev": "vite",
     "build": "vue-tsc --noEmit && vite build",
     "preview": "vite preview",
-    "start": "serve dist -s -l tcp://0.0.0.0:${PORT:-8000}",
+    "start": "node server.js",
     "preinstall": "npx only-allow pnpm",
     "serve": "node server.js"
   },

@@ -72,7 +72,7 @@ const handleSubmit = async () => {
   loading.value = true;
   error.value = '';
 
-  const endpoint = isRegister.value ? 'http://localhost:3000/api/register' : 'http://localhost:3000/api/login';
+  const endpoint = isRegister.value ? '/api/register' : '/api/login';
 
   try {
     const res = await fetch(endpoint, {
