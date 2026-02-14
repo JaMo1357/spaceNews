@@ -3,7 +3,7 @@
   <div class="page-wrapper">
     <PageHeader />
     <main>
-      <PageContent />
+      <router-view />
     </main>
     <footer class="site-footer">
       <div class="footer-inner">
@@ -20,7 +20,6 @@
 
 <script setup lang="ts">
 import PageHeader from './PageHeader.vue'
-import PageContent from './PageContent.vue'
 
 const currentYear = new Date().getFullYear()
 </script>

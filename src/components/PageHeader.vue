@@ -22,7 +22,9 @@
           <nav class="nav">
             <ul class="menu">
               <li v-for="(item, i) in menuArray" :key="i">
-                <a :href="item.url" :class="{ active: i === 0 }" @click="menuOpen = false">{{ item.name }}</a>
+                <router-link :to="item.url" custom v-slot="{ href, navigate, isActive, isExactActive }">
+                  <a :href="href" @click="navigate(); menuOpen = false" :class="{ active: isExactActive }">{{ item.name }}</a>
+                </router-link>
               </li>
             </ul>
           </nav>
@@ -69,13 +71,13 @@ import LoginPopup from './LoginPopup.vue';
 
 const menuArray = [
   { name: 'Home', url: '/' },
-  { name: 'Articles', url: '#articlesSection' },
+  { name: 'Articles', url: '/#articlesSection' }, // Hash linking might need special handling or removal if not needed
   { name: 'Blogs', url: '/blogs' },
   { name: 'About', url: '/about' },
 ]
-const searchText = ref('')
-const isSearchFocused = ref(false)
-const menuOpen = ref(false)
+const searchText = ref('');
+const isSearchFocused = ref(false);
+const menuOpen = ref(false);
 const showLogin = ref(false);
 const currentUser = ref<any>(null);
 const isMobile = ref(false);

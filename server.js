@@ -31,27 +31,30 @@ app.use(express.json());
 
 app.post('/api/register', async (req, res) => {
   const { email, password, name } = req.body;
+  console.log(`Register attempt for: ${email}`);
   try {
     const existing = await sql`SELECT * FROM users WHERE email = ${email}`;
     if (existing.length > 0) {
+      console.log(`User already exists: ${email}`);
       return res.status(400).json({ error: 'User already exists' });
     }
     // In production, hash the password here (e.g. using bcrypt)
     const result = await sql`
       INSERT INTO users (email, password_hash, full_name)
       VALUES (${email}, ${password}, ${name})
-      RETURNING user_id, email, full_name, created_at
+      RETURNING id, email, full_name, created_at
     `;
+    console.log(`User registered successfully: ${email}`);
     res.json(result[0]);
   } catch (err) {
-    console.error('Register error:', err);
-    res.status(500).json({ error: 'Internal server error' });
+    console.error('Register error details:', err);
+    res.status(500).json({ error: 'Internal server error', details: err.message });
   }
 });
 
 app.post('/api/login', async (req, res) => {
   const { email, password } = req.body;
-  console.log(email, password);
+
   try {
     const users = await sql`SELECT * FROM users WHERE email = ${email}`;
     if (users.length === 0) {
