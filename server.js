@@ -4,6 +4,7 @@ import { neon } from '@neondatabase/serverless';
 import cors from 'cors';
 import path from 'path';
 import { fileURLToPath } from 'url';
+import bcrypt from 'bcryptjs';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -46,10 +47,13 @@ app.post('/api/register', async (req, res) => {
       console.log(`User already exists: ${email}`);
       return res.status(400).json({ error: 'User already exists' });
     }
-    // In production, hash the password here (e.g. using bcrypt)
+    // Hash the password
+    const salt = await bcrypt.genSalt(10);
+    const hashedPassword = await bcrypt.hash(password, salt);
+
     const result = await sql`
       INSERT INTO users (email, password_hash, full_name)
-      VALUES (${email}, ${password}, ${name})
+      VALUES (${email}, ${hashedPassword}, ${name})
       RETURNING id, email, full_name, created_at
     `;
     console.log(`User registered successfully: ${email}`);
@@ -69,8 +73,10 @@ app.post('/api/login', async (req, res) => {
       return res.status(401).json({ error: 'Invalid credentials' });
     }
     const user = users[0];
-    // In production, compare hashed password
-    if (user.password_hash !== password) {
+
+    // Compare hashed password
+    const validPassword = await bcrypt.compare(password, user.password_hash);
+    if (!validPassword) {
       return res.status(401).json({ error: 'Invalid credentials' });
     }
     const { password_hash: _, ...userWithoutPassword } = user;
