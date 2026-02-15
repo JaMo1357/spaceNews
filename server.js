@@ -54,7 +54,7 @@ app.post('/api/register', async (req, res) => {
     const result = await sql`
       INSERT INTO users (email, password_hash, full_name)
       VALUES (${email}, ${hashedPassword}, ${name})
-      RETURNING id, email, full_name, created_at
+      RETURNING user_id, email, full_name, created_at
     `;
     console.log(`User registered successfully: ${email}`);
     res.json(result[0]);
