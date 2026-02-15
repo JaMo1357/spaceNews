@@ -65,6 +65,7 @@ import { useRouter } from 'vue-router'
 const props = defineProps<{
   article?: NewsArticle
   viewMode?: 'tile' | 'row'
+  isBlog?: boolean
 }>()
 
 const router = useRouter()
@@ -72,7 +73,11 @@ const isHovered = ref(false)
 
 const goToArticle = () => {
   if (props.article?.id) {
-    router.push({ name: 'Article', params: { id: props.article.id } })
+    if (props.isBlog) {
+      router.push({ name: 'Blog', params: { id: props.article.id } })
+    } else {
+      router.push({ name: 'Article', params: { id: props.article.id } })
+    }
   }
 }
 

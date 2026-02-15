@@ -35,3 +35,13 @@ export interface articlesResponse {
   previous?: string
   results: NewsArticle[]
 }
+
+// Blogs use the same structure as articles
+export type Blog = NewsArticle;
+
+export interface blogsResponse {
+  count: number
+  next: string
+  previous?: string
+  results: Blog[]
+}
