@@ -18,7 +18,7 @@
       <p class="hero-summary">
         {{ latestArticle?.summary }}
       </p>
-      <a :href="`/article/${latestArticle?.id}`" target="_blank" rel="noopener" class="cta-button">
+      <a :href="`/article/${latestArticle?.id}`" class="cta-button">
         Read Article
         <span class="cta-arrow">→</span>
       </a>
