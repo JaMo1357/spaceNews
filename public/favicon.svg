@@ -1,0 +1,59 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="512" height="512">
+  <title>Blue Monochrome Rocket</title>
+
+  <!--
+    Rocket Group
+    Rotated 45 degrees.
+    Scaled up by 1.2 to fill more space.
+    Centered at 256,256.
+  -->
+  <g transform="translate(256, 256) scale(1.2) rotate(45) translate(-256, -256)">
+
+    <!-- Left Wing -->
+    <path d="M150 340
+             L 110 420
+             L 190 400
+             Z"
+          fill="#6c8cff" />
+
+    <!-- Right Wing -->
+    <path d="M362 340
+             L 402 420
+             L 322 400
+             Z"
+          fill="#6c8cff" />
+
+    <!-- Main Fuselage -->
+    <path d="M256 60
+             Q 346 160 346 320
+             L 346 380
+             Q 256 420 166 380
+             L 166 320
+             Q 166 160 256 60 Z"
+          fill="#6c8cff" />
+
+    <!-- Window -->
+    <!-- White ring (transparent effectively), blue center -->
+    <!-- Outer circle simulates the 'cutout' or ring color, here using white to match bg or transparent feel?
+         User said "use only #6c8cff".
+         If I want it to look like the reference (ring), I can make the outer ring #6c8cff and inner white?
+         Or outer white (transparent) and inner #6c8cff?
+         Let's stick to the previous shape logic:
+         - Big circle white (erasing body)
+         - Sml circle blue (window pane)
+    -->
+    <circle cx="256" cy="210" r="55" fill="#ffffff" />
+    <circle cx="256" cy="210" r="35" fill="#6c8cff" />
+
+    <!-- Exhausts (Capsule shapes) -->
+    <!-- Center -->
+    <rect x="236" y="440" width="40" height="80" rx="20" ry="20" fill="#6c8cff" />
+
+    <!-- Left -->
+    <rect x="166" y="420" width="30" height="60" rx="15" ry="15" fill="#6c8cff" />
+
+    <!-- Right -->
+    <rect x="316" y="420" width="30" height="60" rx="15" ry="15" fill="#6c8cff" />
+
+  </g>
+</svg>

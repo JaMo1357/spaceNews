@@ -18,23 +18,13 @@
     <!-- Tile mode: overlay gradient + title at bottom -->
     <template v-if="viewMode === 'tile'">
       <div class="article-tile__overlay"></div>
-      <div class="article-tile__content">
+    <div class="article-tile__content">
         <div class="article-tile__title">
           <span>{{ props.article?.title }}</span>
         </div>
         <div class="article-tile__meta-info">
-          <div class="meta-row">
-            <span class="meta-label">By</span>
-            <span class="meta-value">{{ authorsText }}</span>
-          </div>
-          <div class="meta-row">
-            <span class="meta-label">On</span>
-            <span class="meta-value">{{ formattedDate }}</span>
-          </div>
-          <div class="meta-row">
-            <span class="meta-label">Source</span>
-            <span class="meta-value">{{ props.article?.news_site }}</span>
-          </div>
+          <span class="meta-author">{{ sourcesAndAuthors }}</span>
+          <span class="meta-date">{{ formattedDate }}</span>
         </div>
       </div>
     </template>
@@ -90,9 +80,15 @@ const formattedDate = computed(() => {
   })
 })
 
-const authorsText = computed(() => {
+const sourcesAndAuthors = computed(() => {
   if (!props.article?.authors || props.article.authors.length === 0) return 'Unknown Author'
-  return props.article.authors.map(a => a.name).join(', ')
+  const authors = props.article.authors.map(a => a.name).join(', ')
+
+  if (authors !== props.article.news_site) {
+    return `${authors} (${props.article.news_site})`
+  }
+
+  return authors
 })
 </script>
 
@@ -169,12 +165,7 @@ const authorsText = computed(() => {
     display: flex;
     flex-direction: column;
     gap: 8px;
-    transform: translateY(calc(100% - 80px)); /* Show only title by default */
-    transition: transform 0.4s cubic-bezier(0.2, 0.8, 0.2, 1);
-  }
-
-  &.article-tile--hovered .article-tile__content {
-    transform: translateY(0);
+    /* Transformation removed to keep it visible */
   }
 
   .article-tile__title span {
@@ -197,45 +188,33 @@ const authorsText = computed(() => {
   }
 
   .article-tile__meta-info {
-    opacity: 0;
-    transition: opacity 0.3s ease 0.1s;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 13px;
+    color: var(--text-secondary);
+    margin-top: 4px;
 
     > * {
       overflow: hidden;
     }
   }
 
-  &.article-tile--hovered .article-tile__meta-info {
-    opacity: 1;
-  }
-
-  .meta-row {
-    display: flex;
-    justify-content: space-between;
-    align-items: center; /* Vertically center items */
-    font-size: 13px;
-    color: var(--text-secondary);
-    padding: 2px 0;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-
-    &:last-child {
-      border-bottom: none;
-    }
-  }
-
-  .meta-label {
+  .meta-author {
     font-weight: 600;
     color: var(--text-muted);
-    margin-right: 8px;
-  }
-
-  .meta-value {
-    color: var(--text-primary);
-    text-align: right;
+    text-align: left;
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
-    max-width: 150px;
+    max-width: 65%;
+  }
+
+  .meta-date {
+    color: var(--text-primary);
+    text-align: right;
+    white-space: nowrap;
+    opacity: 0.8;
   }
 }
 

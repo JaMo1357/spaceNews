@@ -18,8 +18,8 @@
       <p class="hero-summary">
         {{ latestArticle?.summary }}
       </p>
-      <a :href="latestArticle?.url" target="_blank" rel="noopener" class="cta-button">
-        Read Full Article
+      <a :href="`/article/${latestArticle?.id}`" target="_blank" rel="noopener" class="cta-button">
+        Read Article
         <span class="cta-arrow">→</span>
       </a>
     </div>
