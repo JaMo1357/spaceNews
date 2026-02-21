@@ -1,29 +1,25 @@
 
 <template>
   <div class="page-content">
-    <LatestArticle :latestArticle="latestArticle" />
-    <ArticleList :articles="articles" />
+    <LatestArticle :latestArticle="store.latestArticle" />
+    <ArticleList :articles="store.articles" />
+
+    <Pagination
+      :currentPage="store.currentPage"
+      :totalPages="store.totalPages"
+      @page-change="store.goToPage"
+    />
   </div>
 </template>
 
 <script async setup lang="ts">
-import { ref } from 'vue'
 import LatestArticle from '@/components/LatestArticle.vue'
 import ArticleList from '@/components/ArticleList.vue'
-import { apiGet, ARTICLES_ENDPOINT } from '@/services/http.service'
-import { NewsArticle, articlesResponse } from '@/types'
+import Pagination from '@/components/Pagination.vue'
+import { usePaginationStore } from '@/stores/pagination'
 
-const articles = ref<NewsArticle[]>([])
-
-const latestArticle = ref<NewsArticle>({} as NewsArticle)
-
-try {
-  const response = await apiGet<articlesResponse>(ARTICLES_ENDPOINT)
-  latestArticle.value = response.results[0] || {}
-  articles.value = response.results
-} catch (error) {
-  console.error(error)
-}
+const store = usePaginationStore()
+await store.init()
 </script>
 
 <style lang="scss">

@@ -1,9 +1,9 @@
-import { NewsArticle, articlesResponse, Blog, blogsResponse } from '@/types'
+import { NewsArticle, Blog, blogsResponse } from '@/types'
 
 export const ARTICLES_ENDPOINT = '/articles'
 
-export async function apiGet<T>(endpoint: string): Promise<T> {
-  const finalEndpoint = `https://api.spaceflightnewsapi.net/v4${endpoint}/?format=json`
+export async function apiGet<T>(endpoint: string, limit: number = 10, offset: number = 0): Promise<T> {
+  const finalEndpoint = `https://api.spaceflightnewsapi.net/v4${endpoint}/?limit=${limit}&offset=${offset}&format=json`
 
   const response = await fetch(finalEndpoint)
   if (!response.ok) {
