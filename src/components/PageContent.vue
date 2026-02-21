@@ -1,7 +1,7 @@
 
 <template>
   <div class="page-content">
-    <LatestArticle :latestArticle="store.latestArticle" />
+    <LatestArticle v-if="!store.isSearchActive" :latestArticle="store.latestArticle" />
     <ArticleList :articles="store.articles" />
 
     <Pagination

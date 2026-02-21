@@ -2,8 +2,11 @@ import { NewsArticle, Blog, blogsResponse } from '@/types'
 
 export const ARTICLES_ENDPOINT = '/articles'
 
-export async function apiGet<T>(endpoint: string, limit: number = 10, offset: number = 0): Promise<T> {
-  const finalEndpoint = `https://api.spaceflightnewsapi.net/v4${endpoint}/?limit=${limit}&offset=${offset}&format=json`
+export async function apiGet<T>(endpoint: string, limit: number = 10, offset: number = 0, search: string = ''): Promise<T> {
+  let finalEndpoint = `https://api.spaceflightnewsapi.net/v4${endpoint}/?limit=${limit}&offset=${offset}&format=json`
+  if (search) {
+    finalEndpoint += `&search=${encodeURIComponent(search)}`
+  }
 
   const response = await fetch(finalEndpoint)
   if (!response.ok) {

@@ -35,12 +35,22 @@
             <img class="search-icon" src="../assets/images/search.svg" alt="Search" />
             <input
               type="text"
+              :class="{ 'search-bar__with-button': searchText.length > 2 }"
               placeholder="Search articles…"
               v-model="searchText"
               @keyup="checkSearchInput"
+              @keyup.enter="triggerSearch"
               @focus="isSearchFocused = true"
               @blur="isSearchFocused = false"
             >
+            <button
+              v-if="searchText.length > 2"
+              class="search-trigger-btn"
+              @click="triggerSearch"
+              aria-label="Search"
+            >
+              <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"></polyline></svg>
+            </button>
           </div>
 
           <div class="user-actions">
@@ -69,6 +79,7 @@
 <script setup lang="ts">
 import { ref, watch, onMounted } from 'vue'
 import LoginPopup from './LoginPopup.vue';
+import { usePaginationStore } from '@/stores/pagination';
 
 const menuArray = [
   { name: 'Articles', url: '/#articlesSection' },
@@ -81,6 +92,7 @@ const menuOpen = ref(false);
 const showLogin = ref(false);
 const currentUser = ref<any>(null);
 const isMobile = ref(false);
+const paginationStore = usePaginationStore();
 
 const handleLogin = (user: any) => {
   currentUser.value = user;
@@ -112,6 +124,15 @@ const checkSearchInput = (e: Event) => {
   const regex = /^[a-zA-Z-]+$/;
   if (!regex.test(value)) {
     searchText.value = searchText.value.replace(/[^a-zA-Z-]/g, '')
+  }
+  if (searchText.value.length === 0) {
+    paginationStore.clearSearch()
+  }
+}
+
+const triggerSearch = () => {
+  if (searchText.value.length > 2) {
+    paginationStore.searchArticles(searchText.value)
   }
 }
 
@@ -353,8 +374,7 @@ onMounted(async () => {
   display: flex;
   align-items: center;
   gap: 10px;
-  padding: 0 16px;
-  width: 220px;
+  padding: 0 6px 0 16px;
   height: 42px;
   background: var(--bg-elevated);
   border: 1px solid var(--border-subtle);
@@ -379,6 +399,7 @@ onMounted(async () => {
   input {
     flex: 1;
     height: 100%;
+    width: 120px;
     background: transparent;
     border: none;
     outline: none;
@@ -388,6 +409,31 @@ onMounted(async () => {
 
     &::placeholder {
       color: var(--text-muted);
+    }
+  }
+
+  &__with-button {
+    width: 82px !important;
+  }
+
+  .search-trigger-btn {
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    border: none;
+    background: linear-gradient(135deg, var(--accent), #a3b8ff);
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    flex-shrink: 0;
+    transition: all 0.2s ease;
+    padding: 0;
+
+    &:hover {
+      transform: scale(1.08);
+      box-shadow: 0 2px 8px rgba(108, 140, 255, 0.4);
     }
   }
 }
